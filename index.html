@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meir Abitbol Fleurs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Meir Abitbol – פרחים ומתוקים לשבת · Fleurs & douceurs pour Shabbat · Netanya">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700&display=swap">
+<style>
+/* Layout: newspaper-wrapped bouquets → a "Friday edition" masthead, then the shop as a clean grid, cart as a side drawer. */
+:root{
+  --paper:#f4f3ef; --card:#ffffff; --ink:#1d211f; --muted:#5b635e; --line:#dcdbd3;
+  --leaf:#2f4a3c; --on-leaf:#ffffff; --leaf-soft:#e2e9e2; --bloom:#b4325f; --bloom-soft:#f7e3ea;
+  --ok:#1f7a4d; --err:#b3261e; --shadow:0 10px 30px rgba(29,33,31,.10);
+  --f-display:"Frank Ruhl Libre","Times New Roman",Georgia,serif;
+  --f-body:"Heebo",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#131715; --card:#1b201d; --ink:#ecebe5; --muted:#a2aaa4; --line:#2e3631;
+  --leaf:#93bfa5; --on-leaf:#0f1411; --leaf-soft:#1f2b24; --bloom:#ea83aa; --bloom-soft:#3a2129;
+  --ok:#6fcf9b; --err:#ff8a80; --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#131715; --card:#1b201d; --ink:#ecebe5; --muted:#a2aaa4; --line:#2e3631;
+  --leaf:#93bfa5; --on-leaf:#0f1411; --leaf-soft:#1f2b24; --bloom:#ea83aa; --bloom-soft:#3a2129;
+  --ok:#6fcf9b; --err:#ff8a80; --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark}
+
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;margin:0}
+img{max-width:100%;display:block}
+button,input,textarea{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--bloom);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+
+/* header */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--paper)}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:10px}
+.brand{display:flex;flex-direction:column;text-decoration:none;min-width:0;margin-inline-end:auto}
+.brand b{font-family:var(--f-display);font-size:1.45rem;font-weight:900;letter-spacing:.01em;line-height:1}
+.brand span{font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;flex:none}
+.lang button{border:0;background:transparent;padding:6px 11px;cursor:pointer;font-size:.85rem;font-weight:500}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.cartbtn{flex:none;display:flex;align-items:center;gap:8px;border:0;background:var(--leaf);color:var(--on-leaf);padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:500}
+.cartbtn .n{background:var(--on-leaf);color:var(--leaf);border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:.8rem;font-weight:700;padding:0 6px}
+.cartbtn .lbl{display:none}
+@media (min-width:640px){.cartbtn .lbl{display:inline}}
+
+/* masthead / hero */
+.mast{border-bottom:3px double var(--ink);padding-block:18px 0}
+.mast .rule{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding-block:6px;font-size:.82rem;color:var(--muted)}
+.mast .rule strong{color:var(--ink);font-weight:700}
+.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-block:28px 36px}
+.hero>*{min-width:0}
+@media (min-width:900px){.hero{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:center}}
+.hero h1{font-size:clamp(2.4rem,6.4vw,4.6rem);font-weight:900}
+.hero h1 em{font-style:normal;color:var(--bloom)}
+.hero p.lead{font-size:1.12rem;color:var(--muted);max-width:52ch;margin:14px 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:.88rem}
+.chip b{color:var(--bloom)}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:12px 20px;font-weight:500;text-decoration:none;cursor:pointer;border:1px solid transparent}
+.btn.primary{background:var(--leaf);color:var(--on-leaf)}
+.btn.ghost{border-color:var(--ink);background:transparent}
+.btn:hover{filter:brightness(1.06)}
+.mosaic{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:1fr 1fr;gap:10px;aspect-ratio:1/1;max-width:100%}
+.mosaic img{width:100%;height:100%;object-fit:cover;border-radius:var(--r)}
+.mosaic img:first-child{grid-row:1/3}
+
+.notice{background:var(--leaf);color:var(--on-leaf)}
+.notice .wrap{display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:center;padding-block:12px;font-size:.95rem;text-align:center}
+.notice b{font-weight:700}
+
+section{padding-block:56px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:14px;margin-bottom:24px}
+.sec-head h2{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:900}
+.sec-head p{color:var(--muted);margin:6px 0 0;max-width:56ch}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.9rem}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* products */
+.grid{display:grid;gap:18px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:760px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1080px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card{background:var(--card);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
+.card .ph{aspect-ratio:4/5;overflow:hidden;background:var(--leaf-soft)}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.card:hover .ph img{transform:scale(1.04)}
+.card .body{padding:12px 12px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{font-size:1.12rem;font-weight:700}
+.card p{margin:0;color:var(--muted);font-size:.85rem;line-height:1.4;flex:1}
+.price{white-space:nowrap;font-weight:700;color:var(--bloom);font-variant-numeric:tabular-nums}
+.buy{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.step button{border:0;background:transparent;width:32px;height:32px;cursor:pointer;font-size:1.1rem;line-height:1}
+.step input{width:34px;text-align:center;border:0;background:transparent;font-variant-numeric:tabular-nums;-moz-appearance:textfield;padding:0}
+.step input::-webkit-outer-spin-button,.step input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.add{flex:1 1 96px;min-width:0;border:0;background:var(--leaf);color:var(--on-leaf);border-radius:999px;height:34px;padding:0 10px;cursor:pointer;font-weight:500;font-size:.88rem;white-space:nowrap}
+.add.done{background:var(--ok)}
+.row-price{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+
+/* soon */
+.soon{display:grid;gap:22px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+@media (min-width:760px){.soon{grid-template-columns:auto 1fr;align-items:center}}
+.soon .badge{display:inline-block;background:var(--bloom-soft);color:var(--bloom);border-radius:999px;padding:4px 12px;font-size:.8rem;font-weight:700;margin-bottom:8px}
+.soon h3{font-size:1.7rem;font-weight:900}
+.soon p{color:var(--muted);margin:8px 0 0}
+.choc{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a06a46 0,#6b3f26 38%,#3e2416 72%);position:relative;box-shadow:inset -8px -10px 18px rgba(0,0,0,.35)}
+.choc i{position:absolute;width:16px;height:13px;border-radius:50%;background:#c99863}
+.choc i:nth-child(1){top:24px;left:30px}.choc i:nth-child(2){top:50px;left:68px}.choc i:nth-child(3){top:74px;left:34px}.choc i:nth-child(4){top:30px;left:76px;width:12px}
+
+/* steps */
+.steps{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));counter-reset:s}
+.steps li{list-style:none;border-top:2px solid var(--ink);padding-top:14px}
+.steps li::before{counter-increment:s;content:counter(s);font-family:var(--f-display);font-weight:900;font-size:2rem;color:var(--bloom);display:block;line-height:1}
+.steps h3{font-size:1.2rem;margin:6px 0 4px}
+.steps p{margin:0;color:var(--muted);font-size:.95rem}
+ol.steps{padding:0;margin:0}
+
+/* gallery */
+.gal{columns:2;column-gap:12px}
+@media (min-width:760px){.gal{columns:3}}
+.gal img{width:100%;border-radius:var(--r);margin-bottom:12px;break-inside:avoid}
+
+/* footer */
+footer{border-top:3px double var(--ink);padding-block:36px 48px}
+.foot{display:grid;gap:26px}
+@media (min-width:760px){.foot{grid-template-columns:1.3fr 1fr 1fr}}
+.foot h3{font-size:1.5rem;font-weight:900}
+.foot h4{margin:0 0 8px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.foot p{margin:0 0 6px}
+.num{font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate;font-weight:700}
+.wa{background:#1f7a4d;color:#fff}
+.small{font-size:.85rem;color:var(--muted)}
+
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(10,12,11,.45);z-index:50}
+.drawer{position:fixed;top:0;bottom:0;inset-inline-end:0;width:min(100%,460px);background:var(--paper);z-index:51;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.dhead{display:flex;align-items:center;justify-content:space-between;padding:14px max(16px,env(safe-area-inset-right,0px)) 14px 16px;border-bottom:1px solid var(--line)}
+.dhead h2{font-size:1.6rem;font-weight:900}
+.x{border:1px solid var(--line);background:var(--card);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1.2rem}
+.dbody{overflow-y:auto;padding:16px;flex:1;display:flex;flex-direction:column;gap:18px}
+.empty{text-align:center;color:var(--muted);padding:40px 10px}
+.line{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:10px;align-items:center}
+.line img{width:56px;height:70px;object-fit:cover;border-radius:8px}
+.line .nm{font-weight:500;line-height:1.25}
+.line .sub{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.line .r{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.rm{border:0;background:none;color:var(--muted);font-size:.8rem;cursor:pointer;text-decoration:underline;padding:0}
+fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+legend{font-family:var(--f-display);font-weight:700;font-size:1.2rem;margin-bottom:6px;padding:0}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:12px;cursor:pointer}
+.opt:has(input:checked){border-color:var(--leaf);box-shadow:0 0 0 1px var(--leaf)}
+.opt input{margin-top:4px;accent-color:var(--leaf)}
+.opt .t{font-weight:500}
+.opt .d{font-size:.85rem;color:var(--muted)}
+.opt .p{margin-inline-start:auto;font-weight:700;white-space:nowrap}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:.9rem;font-weight:500}
+label.f input,label.f textarea{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 12px;font-weight:400}
+label.f input[readonly]{background:var(--leaf-soft)}
+label.f .err{color:var(--err);font-size:.82rem;font-weight:400}
+.warn{background:var(--bloom-soft);color:var(--ink);border-radius:10px;padding:10px 12px;font-size:.88rem}
+.bitbox{background:var(--card);border:1px dashed var(--leaf);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.bitnum{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bitnum .num{font-size:1.5rem}
+.copy{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 12px;cursor:pointer;font-size:.85rem}
+.totals{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:4px;font-variant-numeric:tabular-nums}
+.totals div{display:flex;justify-content:space-between}
+.totals .grand{font-family:var(--f-display);font-size:1.4rem;font-weight:900}
+.dfoot{padding:12px 16px;border-top:1px solid var(--line);background:var(--paper)}
+.send{width:100%;padding:14px;font-size:1.02rem}
+.sent{display:flex;flex-direction:column;gap:12px}
+.sent h3{font-size:1.5rem}
+.sent pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;font-family:var(--f-body);font-size:.88rem;margin:0;max-height:260px;overflow:auto}
+.toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;z-index:60;font-size:.92rem;max-width:calc(100% - 32px);text-align:center}
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:29;padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:var(--paper);border-top:1px solid var(--line)}
+.mbar button{width:100%}
+@media (min-width:760px){.mbar{display:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" id="top-link"><b>Meir Abitbol</b><span data-t="tagline"></span></a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="lang-he" data-lang="he">עב</button>
+      <button type="button" id="lang-fr" data-lang="fr">FR</button>
+    </div>
+    <button type="button" class="cartbtn" id="open-cart" aria-label="Cart">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8h14l-1.4 11.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+      <span class="lbl" data-t="cart"></span><span class="n" id="cart-count">0</span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap mast">
+    <div class="rule"><span><strong data-t="edition"></strong> <span id="ed-date"></span></span><span data-t="city"></span><span><span data-t="deadline"></span> <strong id="dl-date"></strong></span></div>
+    <div class="hero">
+      <div>
+        <p class="eyebrow" data-t="eyebrow"></p>
+        <h1 data-t="h1" data-html="1"></h1>
+        <p class="lead" data-t="lead"></p>
+        <div class="chips">
+          <span class="chip" data-t="chip1" data-html="1"></span>
+          <span class="chip" data-t="chip2" data-html="1"></span>
+          <span class="chip" data-t="chip3" data-html="1"></span>
+        </div>
+        <div class="ctas">
+          <a class="btn primary" href="#boutique" data-t="cta1"></a>
+          <a class="btn ghost" id="wa-talk-hero" target="_blank" rel="noopener" data-t="cta2"></a>
+        </div>
+      </div>
+      <div class="mosaic">
+        <img src="img/g-violet.jpg" alt="" width="760" height="760">
+        <img src="img/g-tournesols.jpg" alt="" width="570" height="760">
+        <img src="img/g-blanc.jpg" alt="" width="684" height="760">
+      </div>
+    </div>
+  </div>
+
+  <div class="notice"><div class="wrap">
+    <span data-t="n1" data-html="1"></span><span data-t="n2" data-html="1"></span><span data-t="n3" data-html="1"></span>
+  </div></div>
+
+  <section id="boutique"><div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow" data-t="shopEy"></p><h2 data-t="shopH"></h2><p data-t="shopP"></p></div>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div></section>
+
+  <section style="padding-top:0"><div class="wrap">
+    <div class="soon">
+      <div class="choc" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div><span class="badge" data-t="soonBadge"></span><h3 data-t="soonH"></h3><p data-t="soonP"></p></div>
+    </div>
+  </div></section>
+
+  <section style="padding-top:0"><div class="wrap">
+    <div class="sec-head"><div><p class="eyebrow" data-t="howEy"></p><h2 data-t="howH"></h2></div></div>
+    <ol class="steps">
+      <li><h3 data-t="s1h"></h3><p data-t="s1p"></p></li>
+      <li><h3 data-t="s2h"></h3><p data-t="s2p"></p></li>
+      <li><h3 data-t="s3h"></h3><p data-t="s3p"></p></li>
+    </ol>
+  </div></section>
+
+  <section id="galerie" style="padding-top:0"><div class="wrap">
+    <div class="sec-head"><div><p class="eyebrow" data-t="galEy"></p><h2 data-t="galH"></h2></div></div>
+    <div class="gal">
+      <img src="img/g-gerberas.jpg" alt="" loading="lazy">
+      <img src="img/g-rose.jpg" alt="" loading="lazy">
+      <img src="img/g-blancs.jpg" alt="" loading="lazy">
+      <img src="img/g-love.jpg" alt="" loading="lazy">
+      <img src="img/g-duo.jpg" alt="" loading="lazy">
+      <img src="img/g-mix.jpg" alt="" loading="lazy">
+    </div>
+  </div></section>
+</main>
+
+<footer><div class="wrap foot">
+  <div><h3>Meir Abitbol</h3><p class="small" data-t="tagline"></p><p class="small" data-t="footAbout" style="margin-top:10px"></p></div>
+  <div><h4 data-t="contact"></h4><p><span data-t="phone"></span> <span class="num">051-570-8133</span></p><p><a class="btn wa" id="wa-talk-foot" target="_blank" rel="noopener" data-t="talk" style="margin-top:6px"></a></p></div>
+  <div><h4 data-t="infos"></h4><p data-t="f1"></p><p data-t="f2"></p><p data-t="f3"></p><p><span data-t="payBit"></span> · <span class="num">053-708-3632</span></p></div>
+</div></footer>
+
+<div class="mbar" id="mbar" hidden><button type="button" class="btn primary" id="mbar-btn"></button></div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="dtitle">
+  <div class="dhead"><h2 id="dtitle" data-t="yourOrder"></h2><button type="button" class="x" id="close-cart" aria-label="Close">×</button></div>
+  <div class="dbody" id="dbody">
+    <div id="order-view">
+      <div id="lines" style="display:flex;flex-direction:column;gap:12px"></div>
+      <div class="empty" id="empty" hidden><p data-t="empty"></p><a class="btn primary" href="#boutique" id="empty-go" data-t="cta1"></a></div>
+      <form id="form" novalidate style="display:flex;flex-direction:column;gap:20px;margin-top:20px">
+        <fieldset>
+          <legend data-t="howGet"></legend>
+          <label class="opt"><input type="radio" name="mode" id="mode-del" value="delivery" checked><span><span class="t" data-t="del"></span><br><span class="d" data-t="delD"></span></span><span class="p">15 ₪</span></label>
+          <label class="opt"><input type="radio" name="mode" id="mode-pick" value="pickup"><span><span class="t" data-t="pick"></span><br><span class="d" data-t="pickD"></span></span><span class="p" data-t="free"></span></label>
+        </fieldset>
+        <fieldset>
+          <legend data-t="details"></legend>
+          <label class="f"><span data-t="name"></span><input id="f-name" autocomplete="name" required><span class="err" id="e-name" hidden></span></label>
+          <label class="f"><span data-t="tel"></span><input id="f-tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="05X-XXX-XXXX" dir="ltr" required><span class="err" id="e-tel" hidden></span></label>
+          <div id="addr-block" style="display:flex;flex-direction:column;gap:8px">
+            <label class="f"><span data-t="street"></span><input id="f-street" autocomplete="address-line1"><span class="err" id="e-street" hidden></span></label>
+            <label class="f"><span data-t="apt"></span><input id="f-apt" autocomplete="address-line2"></label>
+            <label class="f"><span data-t="cityL"></span><input id="f-city" readonly></label>
+            <div class="warn" data-t="onlyNet"></div>
+          </div>
+          <label class="f"><span data-t="note"></span><textarea id="f-note" rows="2"></textarea></label>
+        </fieldset>
+        <fieldset>
+          <legend data-t="pay"></legend>
+          <label class="opt"><input type="radio" name="pay" id="pay-cash" value="cash" checked><span><span class="t" data-t="cash"></span><br><span class="d" id="cash-d"></span></span></label>
+          <label class="opt"><input type="radio" name="pay" id="pay-bit" value="bit"><span><span class="t">Bit</span><br><span class="d" data-t="bitD"></span></span></label>
+          <div class="bitbox" id="bitbox" hidden>
+            <span data-t="bitSend"></span>
+            <div class="bitnum"><span class="num">053-708-3632</span><button type="button" class="copy" id="copy-bit" data-t="copy"></button></div>
+            <span class="small" data-t="bitNote"></span>
+          </div>
+        </fieldset>
+        <div class="totals">
+          <div><span data-t="subtotal"></span><span id="t-sub"></span></div>
+          <div><span id="t-ship-l"></span><span id="t-ship"></span></div>
+          <div class="grand"><span data-t="total"></span><span id="t-total"></span></div>
+        </div>
+        <p class="small" style="margin:0" data-t="special"></p>
+      </form>
+    </div>
+    <div class="sent" id="sent-view" hidden>
+      <h3 data-t="sentH"></h3>
+      <p style="margin:0" data-t="sentP" data-html="1"></p>
+      <pre id="sent-text"></pre>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn wa" id="wa-again" target="_blank" rel="noopener" data-t="reopen"></a>
+        <button type="button" class="btn ghost" id="copy-order" data-t="copyOrder"></button>
+      </div>
+      <button type="button" class="btn primary" id="new-order" data-t="newOrder"></button>
+    </div>
+  </div>
+  <div class="dfoot" id="dfoot">
+    <a class="btn wa send" id="send" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.5-.3z"/></svg>
+      <span id="send-l"></span>
+    </a>
+  </div>
+</aside>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+const WA="972515708133", PRICE=70, SHIP=15;
+const P=[
+ ["blanc","lis",["ליזיאנטוס לבן ואקליפטוס","Lisianthus blanc & eucalyptus"],["ליזיאנטוס לבן, אקליפטוס וגיבסנית. קלאסי ואלגנטי לשולחן שבת.","Lisianthus blancs, eucalyptus et gypsophile. Classique et élégant pour la table de Shabbat."]],
+ ["violet","lis",["ליזיאנטוס סגול-לבן","Lisianthus violet & blanc"],["פרחים דו-גוניים סגול ולבן עם אקליפטוס וגיבסנית.","Fleurs bicolores violet et blanc, avec eucalyptus et gypsophile."]],
+ ["bordeaux","lis",["בורדו ולילי","Bordeaux & lys"],["ליזיאנטוס בורדו, ניצן לילי וגיבסנית לבנה.","Lisianthus bordeaux, bouton de lys et gypsophile blanche."]],
+ ["love-poudre","lis",["ורוד פודרה „Love“","Rose poudré « Love »"],["ליזיאנטוס ורוד רך בנייר קראפט „Love“.","Lisianthus rose tendre dans un papier kraft « Love »."]],
+ ["love-fuchsia","lis",["פוקסיה „Love“","Fuchsia « Love »"],["ליזיאנטוס פוקסיה וורוד, אקליפטוס וגיבסנית.","Lisianthus fuchsia et rose, eucalyptus et gypsophile."]],
+ ["rose-journal","lis",["ליזיאנטוס ורוד","Lisianthus rose"],["ליזיאנטוס ורוד עם הרבה גיבסנית, עטוף בנייר עיתון.","Lisianthus rose avec beaucoup de gypsophile, papier journal."]],
+ ["tournesols","sun",["חמניות","Tournesols"],["חמניות גדולות וגיבסנית. שמש על השולחן.","De grands tournesols et du gypsophile. Du soleil sur la table."]],
+ ["creme-coeur","ger",["גרברות שמנת בלב ורוד","Gerberas crème cœur rose"],["גרברות בצבע שמנת עם לב ורוד.","Gerberas couleur crème au cœur rose."]],
+ ["blanc-rose","ger",["גרברות לבן-ורוד","Gerberas blanc & rose"],["גרברות לבנות עם מרכז ורוד וגיבסנית.","Gerberas blancs au centre rose, avec gypsophile."]],
+ ["framboise","ger",["גרברות פטל","Gerberas framboise"],["גרברות בגוון פטל עז וגיבסנית.","Gerberas couleur framboise et gypsophile."]],
+ ["bicolore","ger",["גרברות ורודות עם נגיעות צהוב","Gerberas roses & touches jaunes"],["גרברות ורודות דו-גוניות עם פרחים צהובים קטנים.","Gerberas roses bicolores avec de petites fleurs jaunes."]],
+ ["jaunes","ger",["גרברות צהובות","Gerberas jaunes"],["גרברות צהובות ופרחים צהובים קטנים.","Gerberas jaunes et petites fleurs jaunes."]],
+ ["orange","ger",["גרברות כתומות","Gerberas orange"],["גרברות כתומות חמות וירק טרי.","Gerberas orange vif et verdure fraîche."]],
+ ["rouges","ger",["גרברות אדומות","Gerberas rouges"],["גרברות אדומות עם פרחים צהובים קטנים.","Gerberas rouges avec de petites fleurs jaunes."]],
+ ["mix-soleil","mix",["מיקס שמש","Mix soleil"],["גרברות צהובות, כתומות ושמנת עם גיבסנית.","Gerberas jaunes, orange et crème avec gypsophile."]],
+ ["mix-rose","mix",["מיקס ורוד","Mix rose"],["גרברות פוקסיה וורוד עם גיבסנית.","Gerberas fuchsia et rose avec gypsophile."]],
+ ["mix-pastel","mix",["מיקס פסטל","Mix pastel"],["גרברות ורוד, לבן ושמנת בגוונים רכים.","Gerberas rose, blanc et crème, tons doux."]],
+ ["mix-rouge","mix",["מיקס אדום-ורוד","Mix rouge & rose"],["גרברות אדומות וורודות עם גיבסנית.","Gerberas rouges et roses avec gypsophile."]]
+];
+const CATS=[["all",["הכל","Tous"]],["lis",["ליזיאנטוס","Lisianthus"]],["ger",["גרברות","Gerberas"]],["mix",["מיקסים","Mix"]],["sun",["חמניות","Tournesols"]]];
+const T={
+ tagline:["פרחים ומתוקים לשבת","Fleurs & douceurs pour Shabbat"],
+ cart:["סל","Panier"],
+ edition:["גיליון יום שישי ·","Édition du vendredi ·"],
+ city:["נתניה","Netanya"],
+ deadline:["הזמנות עד","Commandes jusqu'au"],
+ eyebrow:["זרים טריים · נתניה","Bouquets frais · Netanya"],
+ h1:["פרחים <em>לשבת</em>,<br>עד הדלת שלך","Des fleurs <em>pour Shabbat</em>,<br>jusqu'à votre porte"],
+ lead:["זרים טריים שמאיר מכין בעצמו, עטופים ביד. מזמינים עד חמישי בערב ומקבלים ביום שישי.","Des bouquets frais préparés par Meir et emballés à la main. Commandez jusqu'au jeudi soir, recevez-les le vendredi."],
+ chip1:["זר <b>70 ₪</b>","Le bouquet <b>70 ₪</b>"],
+ chip2:["משלוח בנתניה <b>15 ₪</b>","Livraison Netanya <b>15 ₪</b>"],
+ chip3:["איסוף עצמי <b>חינם</b>","Retrait <b>gratuit</b>"],
+ cta1:["לזרים","Voir les bouquets"],
+ cta2:["לדבר עם מאיר","Parler à Meir"],
+ n1:["הזמנות עד <b>יום חמישי בערב</b>","Commandes jusqu'au <b>jeudi soir</b>"],
+ n2:["משלוח או איסוף <b>ביום שישי</b>","Livraison ou retrait <b>le vendredi</b>"],
+ n3:["משלוחים <b>בנתניה בלבד</b>","Livraison <b>uniquement à Netanya</b>"],
+ shopEy:["החנות","La boutique"],
+ shopH:["הזרים שלנו","Nos bouquets"],
+ shopP:["כל זר 70 ₪. בוחרים כמות ומוסיפים לסל.","Chaque bouquet est à 70 ₪. Choisissez la quantité et ajoutez au panier."],
+ add:["הוספה לסל","Ajouter"], added:["נוסף ✓","Ajouté ✓"],
+ soonBadge:["בקרוב","Bientôt"],
+ soonH:["קראנץ' שוקולד ואגוזי לוז","Croquants chocolat & noisettes"],
+ soonP:["מתוקים ביתיים לשבת, שמאיר מכין בעצמו. בקרוב באתר.","Des douceurs maison pour Shabbat, préparées par Meir. Bientôt sur le site."],
+ howEy:["איך זה עובד","Comment ça marche"],
+ howH:["שלושה צעדים","En trois étapes"],
+ s1h:["בוחרים זרים","Choisissez vos bouquets"],
+ s1p:["מוסיפים לסל את הזרים שאוהבים, בכמות שרוצים.","Ajoutez au panier les bouquets qui vous plaisent, en la quantité voulue."],
+ s2h:["שולחים בוואטסאפ","Envoyez sur WhatsApp"],
+ s2p:["ממלאים שם, טלפון וכתובת. ההזמנה נפתחת בוואטסאפ, ולוחצים על שליחה.","Remplissez nom, téléphone et adresse. La commande s'ouvre dans WhatsApp, appuyez sur Envoyer."],
+ s3h:["מקבלים ביום שישי","Recevez-les vendredi"],
+ s3p:["משלוח עד הבית בנתניה או איסוף בעיר ימים. משלמים במזומן או בביט.","Livraison chez vous à Netanya ou retrait à Ir Yamim. Paiement en espèces ou par Bit."],
+ galEy:["מהסדנה","Dans l'atelier"],
+ galH:["עוד פרחים","Encore des fleurs"],
+ contact:["יצירת קשר","Contact"],
+ phone:["טלפון:","Téléphone :"],
+ talk:["לדבר עם מאיר בוואטסאפ","Parler à Meir sur WhatsApp"],
+ infos:["מידע","Infos"],
+ f1:["הזמנות עד חמישי בערב, הכל מגיע ביום שישי.","Commandes jusqu'au jeudi soir, tout arrive le vendredi."],
+ f2:["משלוח בנתניה בלבד: 15 ₪.","Livraison uniquement à Netanya : 15 ₪."],
+ f3:["איסוף עצמי בחינם בעיר ימים, נתניה.","Retrait gratuit à Ir Yamim, Netanya."],
+ payBit:["תשלום במזומן או בביט","Espèces ou Bit"],
+ footAbout:["בקשה מיוחדת? כתבו למאיר בוואטסאפ.","Une demande spéciale ? Écrivez à Meir sur WhatsApp."],
+ yourOrder:["ההזמנה שלך","Votre commande"],
+ empty:["הסל ריק כרגע.","Votre panier est vide."],
+ howGet:["איך לקבל?","Comment la recevoir ?"],
+ del:["משלוח עד הבית","Livraison à domicile"],
+ delD:["בנתניה בלבד, ביום שישי","Uniquement à Netanya, le vendredi"],
+ pick:["איסוף עצמי","Je viens récupérer"],
+ pickD:["עיר ימים, נתניה. הכתובת המדויקת תישלח בוואטסאפ.","Ir Yamim, Netanya. L'adresse exacte vous sera envoyée sur WhatsApp."],
+ free:["חינם","Gratuit"],
+ details:["הפרטים שלך","Vos coordonnées"],
+ name:["שם מלא","Nom complet"],
+ tel:["טלפון","Téléphone"],
+ street:["רחוב ומספר בית","Rue et numéro"],
+ apt:["דירה / קומה / קוד כניסה (לא חובה)","Appartement / étage / code (facultatif)"],
+ cityL:["עיר","Ville"],
+ onlyNet:["אנחנו משלחים בנתניה בלבד. אם הכתובת מחוץ לנתניה, אין משלוח.","Nous livrons uniquement à Netanya. Si l'adresse est hors de Netanya, nous ne livrons pas."],
+ note:["הערה (לא חובה)","Remarque (facultatif)"],
+ pay:["תשלום","Paiement"],
+ cash:["מזומן","Espèces"],
+ cashDel:["משלמים לשליח, מול הדלת","Vous payez en espèces à la livraison, devant votre porte"],
+ cashPick:["משלמים במזומן באיסוף","Vous payez en espèces au retrait"],
+ bitD:["העברה בביט למספר של מאיר","Virement Bit au numéro de Meir"],
+ bitSend:["שלחו את הסכום בביט למספר:","Envoyez le montant par Bit à ce numéro :"],
+ bitNote:["אחרי ההעברה, שלחו את ההזמנה בוואטסאפ.","Après le paiement, envoyez la commande sur WhatsApp."],
+ copy:["העתקה","Copier"], copied:["הועתק","Copié"],
+ subtotal:["זרים","Bouquets"],
+ shipDel:["משלוח (נתניה)","Livraison (Netanya)"],
+ shipPick:["איסוף עצמי","Retrait"],
+ total:["סה״כ","Total"],
+ special:["בקשה מיוחדת? כתבו למאיר בוואטסאפ אחרי ההזמנה.","Une demande spéciale ? Écrivez-la à Meir sur WhatsApp après la commande."],
+ sendL:["שליחת ההזמנה בוואטסאפ","Envoyer la commande sur WhatsApp"],
+ sentH:["כמעט סיימנו","Presque fini"],
+ sentP:["ההזמנה נפתחה בוואטסאפ. <b>לחצו על „שליחה“ בוואטסאפ</b> כדי שמאיר יקבל אותה. הוא יאשר לכם בוואטסאפ.","Votre commande s'est ouverte dans WhatsApp. <b>Appuyez sur « Envoyer » dans WhatsApp</b> pour que Meir la reçoive. Il vous confirmera sur WhatsApp."],
+ reopen:["לפתוח שוב בוואטסאפ","Rouvrir WhatsApp"],
+ copyOrder:["העתקת ההזמנה","Copier la commande"],
+ newOrder:["הזמנה חדשה","Nouvelle commande"],
+ eName:["נא למלא שם","Indiquez votre nom"],
+ eTel:["מספר טלפון לא תקין (לדוגמה 052-123-4567)","Numéro invalide (ex. 052-123-4567)"],
+ eStreet:["נא למלא כתובת למשלוח","Indiquez l'adresse de livraison"],
+ eEmpty:["הסל ריק","Le panier est vide"],
+ eFix:["נא להשלים את הפרטים המסומנים","Complétez les champs indiqués"],
+ viewCart:["לסל","Voir le panier"],
+ addedToast:["נוסף לסל","Ajouté au panier"],
+ waTalk:["שלום מאיר, יש לי שאלה לגבי הזרים 🌸","Bonjour Meir, j'ai une question sur les bouquets 🌸"],
+ mTitle:["🌸 הזמנה חדשה – Meir Abitbol","🌸 Nouvelle commande – Meir Abitbol"],
+ mName:["👤 שם","👤 Nom"], mTel:["📞 טלפון","📞 Téléphone"], mAddr:["📍 כתובת","📍 Adresse"],
+ mPick:["🏠 איסוף עצמי – עיר ימים (נא לשלוח כתובת)","🏠 Retrait à Ir Yamim (merci d'envoyer l'adresse)"],
+ mShip:["🚚 משלוח נתניה","🚚 Livraison Netanya"],
+ mTotal:["💰 סה״כ","💰 Total"], mPay:["💳 תשלום","💳 Paiement"],
+ mCash:["מזומן","Espèces"], mBit:["ביט","Bit"], mNote:["📝 הערה","📝 Remarque"],
+ mDay:["📅 תאריך:","📅 Date :"]
+};
+let lang="he", cart={}, cat="all";
+const $=id=>document.getElementById(id);
+const L=()=>lang==="he"?0:1;
+const t=k=>(T[k]||["",""])[L()];
+try{lang=localStorage.getItem("ma-lang")||"he";cart=JSON.parse(localStorage.getItem("ma-cart")||"{}")||{}}catch(e){}
+function save(){try{localStorage.setItem("ma-lang",lang);localStorage.setItem("ma-cart",JSON.stringify(cart))}catch(e){}}
+const prod=id=>P.find(p=>p[0]===id);
+for(const k in cart){if(!prod(k)||!(cart[k]>0))delete cart[k]}
+
+function nextFriday(){const d=new Date();d.setHours(12,0,0,0);let add=(5-d.getDay()+7)%7;if(add===0)add=7;d.setDate(d.getDate()+add);return d}
+function fmt(d){return d.toLocaleDateString(lang==="he"?"he-IL":"fr-FR",{weekday:"long",day:"numeric",month:"long"})}
+
+function applyLang(){
+  document.documentElement.lang=lang;document.documentElement.dir=lang==="he"?"rtl":"ltr";
+  document.querySelectorAll("[data-t]").forEach(el=>{const v=t(el.dataset.t);if(el.dataset.html)el.innerHTML=v;else el.textContent=v});
+  $("lang-he").setAttribute("aria-pressed",lang==="he");$("lang-fr").setAttribute("aria-pressed",lang==="fr");
+  const fri=nextFriday(),thu=new Date(fri);thu.setDate(fri.getDate()-1);
+  $("ed-date").textContent=fmt(fri);$("dl-date").textContent=fmt(thu);
+  $("f-city").value=lang==="he"?"נתניה":"Netanya";
+  $("send-l").textContent=t("sendL");
+  const wt="https://wa.me/"+WA+"?text="+encodeURIComponent(t("waTalk"));
+  $("wa-talk-hero").href=wt;$("wa-talk-foot").href=wt;
+  renderFilters();renderGrid();renderCart();
+}
+function renderFilters(){
+  $("filters").innerHTML="";
+  CATS.forEach(([k,n])=>{const b=document.createElement("button");b.type="button";b.textContent=n[L()];b.setAttribute("aria-pressed",cat===k);b.onclick=()=>{cat=k;renderFilters();renderGrid()};$("filters").appendChild(b)});
+}
+function renderGrid(){
+  const g=$("grid");g.innerHTML="";
+  P.filter(p=>cat==="all"||p[1]===cat).forEach(([id,,n,d])=>{
+    const c=document.createElement("article");c.className="card";
+    c.innerHTML=`<div class="ph"><img src="img/${id}.jpg" alt="" loading="lazy" width="520" height="650"></div>
+    <div class="body"><div class="row-price"><h3></h3><span class="price">70 ₪</span></div><p></p>
+    <div class="buy"><div class="step"><button type="button" aria-label="-">−</button><input type="number" id="q-${id}" min="1" max="20" value="1" aria-label="qty"><button type="button" aria-label="+">+</button></div><button type="button" class="add"></button></div></div>`;
+    c.querySelector("h3").textContent=n[L()];c.querySelector("p").textContent=d[L()];c.querySelector("img").alt=n[L()];
+    const q=c.querySelector("input"),[mi,pl]=c.querySelectorAll(".step button"),a=c.querySelector(".add");
+    a.textContent=t("add");
+    mi.onclick=()=>q.value=Math.max(1,(+q.value||1)-1);
+    pl.onclick=()=>q.value=Math.min(20,(+q.value||1)+1);
+    a.onclick=()=>{const n=Math.max(1,Math.min(20,parseInt(q.value)||1));cart[id]=(cart[id]||0)+n;save();renderCart();
+      a.textContent=t("added");a.classList.add("done");setTimeout(()=>{a.textContent=t("add");a.classList.remove("done")},1400);q.value=1;toast(t("addedToast")+" · "+n+" × "+prod(id)[2][L()])};
+    g.appendChild(c);
+  });
+}
+const mode=()=>$("mode-pick").checked?"pickup":"delivery";
+const payM=()=>$("pay-bit").checked?"bit":"cash";
+function totals(){const qty=Object.values(cart).reduce((a,b)=>a+b,0),sub=qty*PRICE,ship=qty&&mode()==="delivery"?SHIP:0;return{qty,sub,ship,total:sub+ship}}
+function renderCart(){
+  const tt=totals();$("cart-count").textContent=tt.qty;
+  const box=$("lines");box.innerHTML="";
+  $("empty").hidden=tt.qty>0;$("form").hidden=tt.qty===0;$("dfoot").hidden=tt.qty===0||!$("sent-view").hidden;
+  Object.entries(cart).forEach(([id,n])=>{
+    const p=prod(id),r=document.createElement("div");r.className="line";
+    r.innerHTML=`<img src="img/${id}.jpg" alt=""><div><div class="nm"></div><div class="sub">${n} × 70 ₪</div></div><div class="r"><div class="step"><button type="button">−</button><input type="number" min="0" max="20" value="${n}" aria-label="qty"><button type="button">+</button></div><button type="button" class="rm"></button></div>`;
+    r.querySelector(".nm").textContent=p[2][L()];r.querySelector(".rm").textContent=lang==="he"?"הסרה":"Retirer";
+    const [mi,pl]=r.querySelectorAll(".step button"),q=r.querySelector("input");
+    const set=v=>{v=Math.max(0,Math.min(20,v|0));if(v)cart[id]=v;else delete cart[id];save();renderCart()};
+    mi.onclick=()=>set(n-1);pl.onclick=()=>set(n+1);q.onchange=()=>set(parseInt(q.value)||0);r.querySelector(".rm").onclick=()=>set(0);
+    box.appendChild(r);
+  });
+  $("addr-block").hidden=mode()!=="delivery";
+  $("bitbox").hidden=payM()!=="bit";
+  $("cash-d").textContent=t(mode()==="delivery"?"cashDel":"cashPick");
+  $("t-sub").textContent=tt.sub+" ₪";$("t-ship-l").textContent=t(mode()==="delivery"?"shipDel":"shipPick");
+  $("t-ship").textContent=mode()==="delivery"?SHIP+" ₪":t("free");$("t-total").textContent=tt.total+" ₪";
+  $("mbar").hidden=tt.qty===0||!$("drawer").hidden;
+  $("mbar-btn").textContent=t("viewCart")+" · "+tt.qty+" · "+tt.total+" ₪";
+  updateLink();
+}
+function cleanTel(v){let d=v.replace(/[^\d+]/g,"");if(d.startsWith("+972"))d="0"+d.slice(4);else if(d.startsWith("972"))d="0"+d.slice(3);return d}
+function message(){
+  const tt=totals(),lines=[t("mTitle"),""];
+  lines.push(t("mName")+": "+$("f-name").value.trim());
+  lines.push(t("mTel")+": "+cleanTel($("f-tel").value));
+  if(mode()==="delivery"){let a=$("f-street").value.trim();const ap=$("f-apt").value.trim();if(ap)a+=", "+ap;lines.push(t("mAddr")+": "+a+", "+(lang==="he"?"נתניה":"Netanya"))}
+  else lines.push(t("mPick"));
+  lines.push(t("mDay")+" "+fmt(nextFriday()),"");
+  Object.entries(cart).forEach(([id,n])=>lines.push("💐 "+n+" × "+prod(id)[2][L()]+" — "+(n*PRICE)+" ₪"));
+  if(mode()==="delivery")lines.push(t("mShip")+": "+SHIP+" ₪");
+  lines.push("",t("mTotal")+": "+tt.total+" ₪",t("mPay")+": "+t(payM()==="bit"?"mBit":"mCash"));
+  const note=$("f-note").value.trim();if(note)lines.push(t("mNote")+": "+note);
+  return lines.join("\n");
+}
+function updateLink(){$("send").href="https://wa.me/"+WA+"?text="+encodeURIComponent(message())}
+function err(id,key,show){const e=$(id);e.textContent=show?t(key):"";e.hidden=!show}
+function validate(){
+  let ok=true;const tt=totals();
+  const n=$("f-name").value.trim().length>=2;err("e-name","eName",!n);ok=ok&&n;
+  const tel=/^0\d{8,9}$/.test(cleanTel($("f-tel").value));err("e-tel","eTel",!tel);ok=ok&&tel;
+  const st=mode()!=="delivery"||$("f-street").value.trim().length>=3;err("e-street","eStreet",!st);ok=ok&&st;
+  if(!tt.qty){toast(t("eEmpty"));return false}
+  if(!ok){toast(t("eFix"));const f=document.querySelector(".err:not([hidden])");f&&f.parentElement.querySelector("input").focus()}
+  return ok;
+}
+$("send").addEventListener("click",e=>{
+  if(!validate()){e.preventDefault();return}
+  updateLink();
+  $("sent-text").textContent=message();$("wa-again").href=$("send").href;
+  $("order-view").hidden=true;$("sent-view").hidden=false;$("dfoot").hidden=true;
+});
+$("new-order").onclick=()=>{cart={};save();["f-note"].forEach(i=>$(i).value="");$("sent-view").hidden=true;$("order-view").hidden=false;renderCart();closeCart()};
+async function copy(text,btn){try{await navigator.clipboard.writeText(text);toast(t("copied"))}catch(e){toast(text)}}
+$("copy-bit").onclick=()=>copy("0537083632");
+$("copy-order").onclick=()=>copy($("sent-text").textContent);
+document.querySelectorAll("#form input,#form textarea").forEach(i=>{i.addEventListener("input",updateLink);i.addEventListener("change",renderCart)});
+let lastFocus=null;
+function openCart(){lastFocus=document.activeElement;$("drawer").hidden=false;$("scrim").hidden=false;document.body.style.overflow="hidden";renderCart();$("close-cart").focus()}
+function closeCart(){$("drawer").hidden=true;$("scrim").hidden=true;document.body.style.overflow="";renderCart();lastFocus&&lastFocus.focus&&lastFocus.focus()}
+$("open-cart").onclick=openCart;$("mbar-btn").onclick=openCart;$("close-cart").onclick=closeCart;$("scrim").onclick=closeCart;
+$("empty-go").addEventListener("click",closeCart);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("drawer").hidden)closeCart()});
+document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;save();applyLang()});
+let tm;function toast(m){const el=$("toast");el.textContent=m;el.hidden=false;clearTimeout(tm);tm=setTimeout(()=>el.hidden=true,2200)}
+applyLang();
+})();
+</script>
+</body>
+</html>
